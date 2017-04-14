@@ -10,6 +10,10 @@ app.config.update(dict(
     PASSWORD='default'
 ))
 
+@app.route('/')
+def index():
+    return render_template('index.html')
+
 @app.route('/hello')
 def hello():
     return render_template('hello.html', name=app.config['USERNAME'])

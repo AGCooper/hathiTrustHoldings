@@ -14,11 +14,11 @@ app.config.update(dict(
 def index():
     return render_template('index.html')
 
-@app.route('/hello')
+@app.route('/hello', methods=['GET', 'POST'])
 def hello():
     return render_template('hello.html', name=app.config['USERNAME'])
 
-@app.route('/good_bye')
+@app.route('/good_bye', methods=['GET', 'POST'])
 def good_bye():
     return render_template('good_bye.html')
 

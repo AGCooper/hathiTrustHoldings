@@ -33,6 +33,6 @@ def deleted_config(I_need):
         return LIMIT
 ```
 
-> is part of .gitignore to keep secrts secret
+> is part of .gitignore to keep secrets secret
 
 ----

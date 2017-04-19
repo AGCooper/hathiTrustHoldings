@@ -9,7 +9,7 @@ import os
 import sys 
 import re
 import requests
-import xml.etree.ElementTree as elementTree
+import xml.etree.ElementTree as ET
 
 
 def get_item_info(result_node,id_list):
@@ -19,7 +19,6 @@ def get_item_info(result_node,id_list):
         rows=result_node.findall("Row")
     except:
         sys.stderr.write("couldn't find Rows."+"\n")
-        return id_list,outcome
     mms_id=""
     material_type=""
     barcode=""
@@ -83,7 +82,7 @@ def get_item_info(result_node,id_list):
             return id_list,outcome
         item_row=str(bib_status + delim + material_type + delim + mms_id + delim + other_number + delim + title + delim + barcode + delim + description + delim + oclc_number + delim + "WD")
         id_list.append(item_row)
-    return id_list,0
+    return id_list
 
 def analytics_xml(url,apikey,path,limit):
 
@@ -93,5 +92,46 @@ def analytics_xml(url,apikey,path,limit):
     except:
         sys.stderr.write("api request failed" + "\n")
     return_code = r.status_code
+    if return_code == 200:
+        response = r.content
+    else:
+        sys.stderr.write("FAILED(1)" + "\n")
+        response = r.content
+        sys.stderr.write(str(response) + "\n")
+        return 1
+    in_string = response
+    in_string = in_string.rstrip("\n")
+    in_string = in_string.replace(" xmlns=\"urn:schemas-microsoft-com:xml-analysis:rowset\"","")
+    id_list = []
+    try:
+        tree = ET.fromstring(in_string)
+    except:
+        sys.stderr.write("parse failed(1)" + "\n")
+        return 1
+    try:
+        result_node = tree.find("QueryResult/ResultXml/rowset")
+    except:
+        sys.stderr.write("parse failed(2)" + "\n")
+        return 1
+    try:
+        rows=result_node.findall("Row")
+    except:
+        sys.stderr.write("couldn't find Rows."+"\n")
+    oclc_number = ""
+    for this_row in rows:
+        item_row = ""
+        try:
+            this_node=this_row.find("Column8")
+            oclc_number=str(this_node.text)
+        except:
+            sys.stderr.write("couldn't find Column8."+"\n")
+        item_row = oclc_number
+        id_list.append(item_row)
+    target = open("/tmp/id_list.tsv", 'a')
+    for ids in id_list:
+        ids = str(ids)
+        target.write(ids + "\n")
+    target.close()
+    target = open("/tmp/id_list.tsv", 'r')
+    return target.read()
 
-    return return_code

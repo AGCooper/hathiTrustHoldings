@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import os
+from delBibsApi import analytics_xml
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 app = Flask(__name__)
 
@@ -9,6 +10,10 @@ app.config.update(dict(
     USERNAME='admin',
     PASSWORD='default'
 ))
+URL=str('https://api-na.hosted.exlibrisgroup.com/almaws/v1/analytics/reports')
+PATH=str('/shared/Emory University Libraries/Reports/ACOOPE5/Deleted_bibs')
+APIKEY=str('l7xx00334afab90e47c9aa950cdc92b405b9')
+LIMIT=str('1000')
 
 @app.route('/')
 def index():
@@ -17,6 +22,11 @@ def index():
 @app.route('/hello', methods=['GET', 'POST'])
 def hello():
     return render_template('hello.html', name=app.config['USERNAME'])
+
+@app.route('/requesting', methods=['GET', 'POST'])
+def requesting():
+    xml=analytics_xml(URL,APIKEY,PATH,LIMIT)
+    return render_template('request.html', xml=xml)
 
 @app.route('/good_bye', methods=['GET', 'POST'])
 def good_bye():

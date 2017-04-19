@@ -8,7 +8,11 @@
 
 ### Contributors:
 
-#### Alex Cooper
+#### Alex Cooper, Elizabeth Peele Mumpower
+
+### Purpose:
+
+#### Produce [HathiTrust Annual Print Holdings Reports](https://www.hathitrust.org/print_holdings)
 
 ----
 

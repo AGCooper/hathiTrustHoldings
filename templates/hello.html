@@ -1,16 +1,21 @@
 {% extends "layout.html" %}
 {% block body %}
-    {% if name %}
-        <p>
-        <h2>Hello {{ name }}!</h2>
-        </p>
-        <form action="{{ url_for('requesting') }}" method="post">
-          <input type="submit" value="Request" onclick="alert('Your request was received')">
-        </form>
-        <br><button type="button" onclick="alert('You clicked a button!')">Click Me!</button>
+    {% if session.logged_in %}
+        {% if name %}
+            <p>
+            <h2>Hello {{ name }}!</h2>
+            </p>
+            <form action="{{ url_for('requesting') }}" method="post">
+              <input type="submit" value="Request" onclick="this.disabled='disabled'">
+<!--              <input type="submit" value="Request" onclick="alert('Your request was received')"> -->
+            </form>
+<!--            <br><button type="button" onclick="alert('You clicked a button!')">Click Me!</button> -->
+        {% else %}
+            <p>
+            <h2>Hello, World!</h2>
+            </p>
+        {% endif %}
     {% else %}
-        <p>
-        <h2>Hello, World!</h2>
-        </p>
+        <h2>Please log in</h2>
     {% endif %}
 {% endblock %}

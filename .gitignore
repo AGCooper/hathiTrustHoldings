@@ -6,3 +6,8 @@
 ##################
 
 hathi_config.py
+
+# Backup Copies #
+#################
+
+*.swp

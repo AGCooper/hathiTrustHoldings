@@ -3,7 +3,7 @@
 import os
 from delBibsApi import analytics_xml
 from hathi_config import deleted_config
-from flask import Flask, flash, redirect, render_template, request, session, url_for
+from flask import Flask, flash, redirect, render_template, request, session, url_for, make_response
 app = Flask(__name__)
 
 app.config.update(dict(
@@ -20,14 +20,18 @@ def index():
 def hello():
     return render_template('hello.html', name=app.config['USERNAME'])
 
+@app.route('/id_list')
+def id_list():
+    return render_template('id_list.tsv')
+
 @app.route('/requesting', methods=['GET', 'POST'])
 def requesting():
     URL=deleted_config("url")
     PATH=deleted_config("path")
     APIKEY=deleted_config("apikey")
     LIMIT=deleted_config("limit")
-    xml=analytics_xml(URL,APIKEY,PATH,LIMIT)
-    return render_template('request.html', xml=xml)
+    tsv = analytics_xml(URL,APIKEY,PATH,LIMIT)
+    return render_template('request.html', tsv=tsv)
 
 @app.route('/good_bye', methods=['GET', 'POST'])
 def good_bye():

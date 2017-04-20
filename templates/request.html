@@ -1,9 +1,12 @@
 {% extends "layout.html" %}
 {% block body %}
     {% if session.logged_in %}
-        {% if xml %}
+        {% if tsv %}
           <p>
-          API Response: <br>{{ xml }}</br>
+          API Response:
+          <br>
+          <a href={{ tsv }} download="hathi_withdrawn.tsv">Download Report</a>
+          </br>
           </p>
         {% endif %}
     {% else %}

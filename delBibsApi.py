@@ -80,7 +80,7 @@ def get_item_info(result_node,id_list):
         except:
             sys.stderr.write("couldn't find Column8."+"\n")
             return id_list,outcome
-        item_row=str(bib_status + delim + material_type + delim + mms_id + delim + other_number + delim + title + delim + barcode + delim + description + delim + oclc_number + delim + "WD")
+        item_row=str(material_type + delim + mms_id + delim + other_number + delim + title + delim + barcode + delim + description + delim + oclc_number + delim + "WD")
         id_list.append(item_row)
         outcome = 0
     return id_list,outcome
@@ -177,4 +177,9 @@ def analytics_xml(url,apikey,path,limit):
             sys.stderr.write("couldn't find rowset."+"\n")
             return outcome
         id_list,outcome=get_item_info(result_node,id_list)
-    return id_list
+    file_name = "/tmp/id_list.tsv"
+    target = open(file_name, 'a')
+    for ids in id_list:
+        target.write(ids)
+    target.close
+    return file_name

@@ -8,7 +8,7 @@
 
 ### Contributors:
 
-#### Alex Cooper, Elizabeth Peele Mumpower
+#### Alex Cooper, Lisa Hamlett, Elizabeth Peele Mumpower
 
 ### Purpose:
 

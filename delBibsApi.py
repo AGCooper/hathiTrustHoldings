@@ -82,10 +82,13 @@ def get_item_info(result_node,id_list):
             return id_list,outcome
         item_row=str(bib_status + delim + material_type + delim + mms_id + delim + other_number + delim + title + delim + barcode + delim + description + delim + oclc_number + delim + "WD")
         id_list.append(item_row)
-    return id_list
+        outcome = 0
+    return id_list,outcome
 
 def analytics_xml(url,apikey,path,limit):
 
+    in_string = ""
+    outcome = 1
     payload = { 'apikey':apikey, 'path':path, 'limit':limit }
     try:
         r = requests.get(url,params=payload)
@@ -95,43 +98,83 @@ def analytics_xml(url,apikey,path,limit):
     if return_code == 200:
         response = r.content
     else:
-        sys.stderr.write("FAILED(1)" + "\n")
-        response = r.content
-        sys.stderr.write(str(response) + "\n")
+        sys.stderr.write("FAILED(1)\n")
+        response=r.content
+        sys.stderr.write(str(response)+"\n")
         return 1
-    in_string = response
-    in_string = in_string.rstrip("\n")
-    in_string = in_string.replace(" xmlns=\"urn:schemas-microsoft-com:xml-analysis:rowset\"","")
-    id_list = []
+    in_string=response
+    in_string=in_string.replace("\n","")
+    in_string=in_string.replace(" xmlns=\"urn:schemas-microsoft-com:xml-analysis:rowset\"","")
     try:
-        tree = ET.fromstring(in_string)
+        tree=ET.fromstring(in_string)
     except:
-        sys.stderr.write("parse failed(1)" + "\n")
-        return 1
+        sys.stderr.write("parse failed(1a)."+"\n")
+        return outcome
     try:
-        result_node = tree.find("QueryResult/ResultXml/rowset")
+        finished=tree.find("QueryResult/IsFinished")
     except:
-        sys.stderr.write("parse failed(2)" + "\n")
-        return 1
-    try:
-        rows=result_node.findall("Row")
-    except:
-        sys.stderr.write("couldn't find Rows."+"\n")
-    oclc_number = ""
-    for this_row in rows:
-        item_row = ""
+        sys.stderr.write("parse failed(2)."+"\n")
+        return outcome
+    id_list=[]
+    if finished.text == "false":
         try:
-            this_node=this_row.find("Column8")
-            oclc_number=str(this_node.text)
+            token=tree.find("QueryResult/ResumptionToken")
         except:
-            sys.stderr.write("couldn't find Column8."+"\n")
-        item_row = oclc_number
-        id_list.append(item_row)
-    target = open("/tmp/id_list.tsv", 'a')
-    for ids in id_list:
-        ids = str(ids)
-        target.write(ids + "\n")
-    target.close()
-    target = open("/tmp/id_list.tsv", 'r')
-    return target.read()
-
+            sys.stderr.write("parse failed(3)."+"\n")
+            return outcome
+        this_token=str(token.text)
+        id_list=[]
+        sys.stderr.write(str(url)+" "+str(apikey)+" "+this_token+" "+str(id_list)+" "+limit+"\n")
+        try:
+            result_node=tree.find("QueryResult/ResultXml/rowset")
+        except:
+            sys.stderr.write("couldn't find rowset."+"\n")
+            return outcome
+        id_list,outcome=get_item_info(result_node,id_list)
+        work_to_do=True
+        outcome=1
+        while work_to_do:
+            payload={'apikey':apikey,'token':this_token,'limit':limit}
+            try:
+                r=requests.get(url,params=payload)
+            except:
+                sys.stderr.write("api request failed."+"\n")
+                return outcome
+            return_code=r.status_code
+            if return_code == 200:
+                response=r.content
+            else:
+                sys.stderr.write("FAILED(2)\n")
+                response=r.content
+                sys.stderr.write(str(response)+"\n")
+                return outcome
+            in_string=response
+            in_string=in_string.replace("\n","")
+            in_string=in_string.replace(" xmlns=\"urn:schemas-microsoft-com:xml-analysis:rowset\"","")
+            try:
+                tree=ET.fromstring(in_string)
+            except:
+                sys.stderr.write("parse failed(1.i)."+"\n")
+                return outcome
+            try:
+                finished=tree.find("QueryResult/IsFinished")
+            except:
+                sys.stderr.write("parse failed(2)."+"\n")
+                return outcome
+            if finished.text == "true":
+                work_to_do=False
+            try:
+                result_node=tree.find("QueryResult/ResultXml/rowset")
+#                print result_node
+            except:
+                sys.stderr.write("couldn't find rowset."+"\n")
+                return outcome
+            id_list,outcome=get_item_info(result_node,id_list)
+    else:
+        try:
+            result_node=tree.find("QueryResult/ResultXml/rowset")
+        except:
+            sys.stderr.write("couldn't find rowset."+"\n")
+            return outcome
+        id_list,outcome=get_item_info(result_node,id_list)
+    return id_list

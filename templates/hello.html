@@ -6,7 +6,7 @@
             <h2>Hello {{ name }}!</h2>
             </p>
             <form action="{{ url_for('requesting') }}" method="post">
-              <input type="submit" value="Request" onclick="this.disabled='disabled'">
+              <input type="submit" value="Request" onclick="alert('Your request was submitted');this.disabled='disabled';">
 <!--              <input type="submit" value="Request" onclick="alert('Your request was received')"> -->
             </form>
 <!--            <br><button type="button" onclick="alert('You clicked a button!')">Click Me!</button> -->

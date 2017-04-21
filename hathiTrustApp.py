@@ -3,7 +3,7 @@
 import os
 from delBibsApi import analytics_xml
 from hathi_config import deleted_config
-from flask import Flask, flash, redirect, render_template, request, session, url_for, make_response
+from flask import Flask, flash, redirect, render_template, request, session, url_for, send_file
 app = Flask(__name__)
 
 app.config.update(dict(
@@ -23,6 +23,10 @@ def hello():
 @app.route('/id_list')
 def id_list():
     return render_template('id_list.tsv')
+
+@app.route('/return_files/')
+def return_files():
+    return send_file('/tmp/id_list.tsv', attachment_filename='hathi_deleted_report.tsv')
 
 @app.route('/requesting', methods=['GET', 'POST'])
 def requesting():

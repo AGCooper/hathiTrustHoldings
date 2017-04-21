@@ -37,31 +37,26 @@ def get_item_info(result_node,id_list):
             bib_status=str(this_node.text)
         except:
             sys.stderr.write("couldn't find Column1."+"\n")
-            return id_list,outcome
         try:
             this_node=this_row.find("Column2")
             material_type=str(this_node.text)
         except:
             sys.stderr.write("couldn't find Column2."+"\n")
-            return id_list,outcome
         try:
             this_node=this_row.find("Column3")
             mms_id=str(this_node.text)
         except:
             sys.stderr.write("couldn't find Column3."+"\n")
-            return id_list,outcome
         try:
             this_node=this_row.find("Column4")
             other_number=str(this_node.text)
         except:
             sys.stderr.write("couldn't find Column4."+"\n")
-            return id_list,outcome
         try:
             this_node=this_row.find("Column5")
             title=str(this_node.text)
         except:
             sys.stderr.write("couldn't find Column5."+"\n")
-            return id_list,outcome
         try:
             this_node=this_row.find("Column6")
             barcode=str(this_node.text)
@@ -73,13 +68,11 @@ def get_item_info(result_node,id_list):
             description=str(this_node.text)
         except:
             sys.stderr.write("couldn't find Column7."+"\n")
-            return id_list,outcome
         try:
             this_node=this_row.find("Column8")
             oclc_number=str(this_node.text)
         except:
             sys.stderr.write("couldn't find Column8."+"\n")
-            return id_list,outcome
         item_row=str(material_type + delim + mms_id + delim + other_number + delim + title + delim + barcode + delim + description + delim + oclc_number + delim + "WD")
         id_list.append(item_row)
         outcome = 0
@@ -180,6 +173,6 @@ def analytics_xml(url,apikey,path,limit):
     file_name = "/tmp/id_list.tsv"
     target = open(file_name, 'a')
     for ids in id_list:
-        target.write(ids)
+        target.write(ids + "\n")
     target.close
     return file_name

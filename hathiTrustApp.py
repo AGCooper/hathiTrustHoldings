@@ -20,10 +20,6 @@ def index():
 def hello():
     return render_template('hello.html', name=app.config['USERNAME'])
 
-@app.route('/id_list')
-def id_list():
-    return render_template('id_list.tsv')
-
 @app.route('/return_files/')
 def return_files():
     return send_file('/tmp/id_list.tsv', attachment_filename='hathi_deleted_report.tsv')

@@ -80,6 +80,8 @@ def get_item_info(result_node,id_list):
 
 def analytics_xml(url,apikey,path,limit):
 
+    file_name = "/tmp/id_list.tsv"
+    os.remove(file_name)
     in_string = ""
     outcome = 1
     payload = { 'apikey':apikey, 'path':path, 'limit':limit }
@@ -170,7 +172,6 @@ def analytics_xml(url,apikey,path,limit):
             sys.stderr.write("couldn't find rowset."+"\n")
             return outcome
         id_list,outcome=get_item_info(result_node,id_list)
-    file_name = "/tmp/id_list.tsv"
     target = open(file_name, 'a')
     for ids in id_list:
         target.write(ids + "\n")

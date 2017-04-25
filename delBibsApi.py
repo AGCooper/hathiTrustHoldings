@@ -6,6 +6,7 @@ r"""
    Purpose: Parse deleted bibs report for hathi trust 
 """
 import os
+import os.path
 import sys 
 import re
 import requests
@@ -81,7 +82,10 @@ def get_item_info(result_node,id_list):
 def analytics_xml(url,apikey,path,limit):
 
     file_name = "/tmp/id_list.tsv"
-    os.remove(file_name)
+    if os.path.isfile(file_name):
+        os.remove(file_name)
+    else:
+        do_nothing = True
     in_string = ""
     outcome = 1
     payload = { 'apikey':apikey, 'path':path, 'limit':limit }

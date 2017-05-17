@@ -17,5 +17,5 @@ footer          { font-size: 0.8em; }
 .flash          { background: #CEE5F5; padding: 0.5em;
                   border: 1px solid #AACBE2; }
 .error          { background: #F0D6D6; padding: 0.5em; }
-.button         { background-color: #002878; border: none; color: white;                                                                               padding: 15px 32px; text-align: center;                                                                                              text-decoration: none; display: inline-block;                                                                                        font-size: 16px; margin: 4px 2px; cursor: pointer; }
+.button         { background-color: #002878; border: none; border-radius: 6px;                                                                         color: white; padding: 10px 16px; text-align: center;                                                                                text-decoration: none; display: inline-block;                                                                                        font-size: 16px; margin: 4px 2px; cursor: pointer; }
 .select         { padding: 15px 32px; }

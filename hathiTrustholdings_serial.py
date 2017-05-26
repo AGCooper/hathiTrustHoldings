@@ -47,13 +47,34 @@ mms_id = ""
 for this_row in rows:
 	column = ""
 	try:
-		mms_id = this_row.find(".//{urn:schemas-microsoft-com:xml-analysis:rowset}Column2").text
+		issn = this_row.find(".//{urn:schemas-microsoft-com:xml-analysis:rowset}Column1").text
 			#mms_id = str(this_node.text)
 	except:
 		sys.stderr.write("couldn't find Column 1."+"\n")
-	column=str(mms_id)
+	try:
+		mms_id = this_row.find(".//{urn:schemas-microsoft-com:xml-analysis:rowset}Column2").text
+			#mms_id = str(this_node.text)
+	except:
+		sys.stderr.write("couldn't find Column 2."+"\n")
+	try:
+		aleph_number = this_row.find(".//{urn:schemas-microsoft-com:xml-analysis:rowset}Column3").text
+			#mms_id = str(this_node.text)
+	except:
+		sys.stderr.write("couldn't find Column 3."+"\n")
+	try:
+		material_type = this_row.find(".//{urn:schemas-microsoft-com:xml-analysis:rowset}Column4").text
+			#mms_id = str(this_node.text)
+	except:
+		sys.stderr.write("couldn't find Column 4."+"\n")
+	try:
+		network_number = this_row.find(".//{urn:schemas-microsoft-com:xml-analysis:rowset}Column5").text
+			#mms_id = str(this_node.text)
+	except:
+		sys.stderr.write("couldn't find Column 5."+"\n")
+	column=str(issn + mms_id + aleph_number + material_type + network_number)
+	id_list = []
 	id_list.append(column)
-return id_list
+	print id_list
 
 # for rows in tree.findall(".//{urn:schemas-microsoft-com:xml-analysis:rowset}Row"):
 # 	try:

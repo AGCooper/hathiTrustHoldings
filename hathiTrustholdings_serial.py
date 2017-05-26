@@ -39,39 +39,40 @@ except:
 	sys.stderr.write("couldn't find rows."+"\n")
 
 mms_id = ""
-# network_number = ""
-# material_type = ""
-# issn = ""
-# aleph_number = ""
+network_number = ""
+material_type = ""
+issn = ""
+aleph_number = ""
+delim = "	"
 
 for this_row in rows:
 	column = ""
 	try:
-		issn = this_row.find(".//{urn:schemas-microsoft-com:xml-analysis:rowset}Column1").text
-			#mms_id = str(this_node.text)
+		this_node = this_row.find(".//{urn:schemas-microsoft-com:xml-analysis:rowset}Column1")
+		issn = str(this_node.text)
 	except:
 		sys.stderr.write("couldn't find Column 1."+"\n")
 	try:
-		mms_id = this_row.find(".//{urn:schemas-microsoft-com:xml-analysis:rowset}Column2").text
-			#mms_id = str(this_node.text)
+		this_node = this_row.find(".//{urn:schemas-microsoft-com:xml-analysis:rowset}Column2")
+		mms_id = str(this_node.text)
 	except:
 		sys.stderr.write("couldn't find Column 2."+"\n")
 	try:
-		aleph_number = this_row.find(".//{urn:schemas-microsoft-com:xml-analysis:rowset}Column3").text
-			#mms_id = str(this_node.text)
+		this_node = this_row.find(".//{urn:schemas-microsoft-com:xml-analysis:rowset}Column3")
+		aleph_number = str(this_node.text)
 	except:
 		sys.stderr.write("couldn't find Column 3."+"\n")
 	try:
-		material_type = this_row.find(".//{urn:schemas-microsoft-com:xml-analysis:rowset}Column4").text
-			#mms_id = str(this_node.text)
+		this_node = this_row.find(".//{urn:schemas-microsoft-com:xml-analysis:rowset}Column4")
+		material_type = str(this_node.text)
 	except:
 		sys.stderr.write("couldn't find Column 4."+"\n")
 	try:
-		network_number = this_row.find(".//{urn:schemas-microsoft-com:xml-analysis:rowset}Column5").text
-			#mms_id = str(this_node.text)
+		this_node = this_row.find(".//{urn:schemas-microsoft-com:xml-analysis:rowset}Column5")
+		network_number = str(this_node.text)
 	except:
 		sys.stderr.write("couldn't find Column 5."+"\n")
-	column=str(issn + mms_id + aleph_number + material_type + network_number)
+	column=('This is the output:' + issn +delim + mms_id + delim + aleph_number + delim + material_type + delim+ network_number)
 	id_list = []
 	id_list.append(column)
 	print id_list

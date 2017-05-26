@@ -33,46 +33,41 @@ items = r.content
 
 tree = ET.fromstring(items)
 
-for rows in tree.findall(".//{urn:schemas-microsoft-com:xml-analysis:rowset}Row"):
+try:
+	rows=tree.findall(".//{urn:schemas-microsoft-com:xml-analysis:rowset}Row")
+except:
+	sys.stderr.write("couldn't find rows."+"\n")
+
+mms_id = ""
+# network_number = ""
+# material_type = ""
+# issn = ""
+# aleph_number = ""
+
+for this_row in rows:
+	column = ""
 	try:
-		this_node=rows.find("{urn:schemas-microsoft-com:xml-analysis:rowset}Column2").text
+		mms_id = this_row.find(".//{urn:schemas-microsoft-com:xml-analysis:rowset}Column2").text
+			#mms_id = str(this_node.text)
 	except:
-		sys.stderr.write("couldn't find Column2."+"\n")
+		sys.stderr.write("couldn't find Column 1."+"\n")
+	column=str(mms_id)
+	id_list.append(column)
+return id_list
+
+# for rows in tree.findall(".//{urn:schemas-microsoft-com:xml-analysis:rowset}Row"):
+# 	try:
+# 		this_node=rows.find("{urn:schemas-microsoft-com:xml-analysis:rowset}Column2").text
+# 	except:
+# 		sys.stderr.write("couldn't find Column2."+"\n")
 	
-	print this_node
+# 	print this_node
+
+	# 
 
 
-# #for child in tree.iter():
-# #	print child.tag
 
-# #print tree.getroot()
-
-# for item in tree.findall('./ResultXML'):
-# 	item_node = item.find('.//{urn:schemas-microsoft-com:xml-analysis:rowset}Row').text
-	#mms_id = item_node.text
-
-	#print item_node
-
-	#return mms_id
-
-	# try:
-	# 	rows=tree.findall('.//{urn:schemas-microsoft-com:xml-analysis:rowset}Row')
-	# except:
-	# 	sys.stderr.write("couldn't find rows."+"\n")
-
-	# mms_id = ""
-	# network_number = ""
-	# material_type = ""
-	# issn = ""
-	# aleph_number = ""
-
-	# for this_row in rows:
-	# 		column = ""
-	# 		try:
-	# 			this_node = this_row.find('.//{urn:schemas-microsoft-com:xml-analysis:rowset}Column1')
-	# 			mms_id = str(this_node.text)
-	# 		except:
-	# 			sys.stderr.write("couldn't find Column 1."+"\n")
+	# 
 	# 		try:
 	# 			this_node = this_row.find('.//{urn:schemas-microsoft-com:xml-analysis:rowset}Column2')
 	# 			network_number = str(this_node.text)

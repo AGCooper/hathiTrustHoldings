@@ -37,6 +37,10 @@ def requesting():
 def good_bye():
     return render_template('good_bye.html')
 
+@app.route('/about', methods=['GET'])
+def about():
+    return render_template('about.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None

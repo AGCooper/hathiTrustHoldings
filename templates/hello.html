@@ -6,10 +6,18 @@
             <h2>Hello {{ name }}!</h2>
             </p>
             <form action="{{ url_for('requesting') }}" method="post">
-              <input type="submit" value="Deleted Report" onclick="alert('Your request was submitted');this.disabled='disabled';">
-<!--              <input type="submit" value="Request" onclick="alert('Your request was received')"> -->
+              <input type="submit" class="button" value="Deleted Report" onclick="alert('Your request was submitted');this.disabled='disabled';">
             </form>
-<!--            <br><button type="button" onclick="alert('You clicked a button!')">Click Me!</button> -->
+<!--            <form action="{{ url_for('requesting') }}" method="post">
+                <label>Select</label>
+                <p>
+                <select class="select" name="Item 1">
+                    <option value="Deleted Items">Deleted Report</option>
+                    <option value="Monographs">Monographs</option>
+                </select>
+                <button class="button" type="submit">Submit</button>
+                </p>
+            </form> -->
         {% else %}
             <p>
             <h2>Hello, World!</h2>

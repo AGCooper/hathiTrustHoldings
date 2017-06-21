@@ -45,14 +45,17 @@ def login():
             error = 'Invalid username'
         elif request.form['password'] != app.config['PASSWORD']:
             error = 'Invalid password'
+        elif request.form['email'].find('@') == -1:
+            error = 'Invalid email' 
         else:
+            email = request.form['email']
             session['logged_in'] = True
-            flash('You were logged in')
+            flash('You have been logged in ' + email)
             return redirect(url_for('hello'))
     return render_template('login.html', error=error)
 
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
-    flash('You were logged out')
+    flash('You have been logged out')
     return redirect(url_for('good_bye'))

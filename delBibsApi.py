@@ -65,16 +65,16 @@ def get_item_info(result_node,id_list):
             sys.stderr.write("couldn't find Column6."+"\n")
             return id_list,outcome
         try:
-            this_node=this_row.find("Column7")
-            description=str(this_node.text)
-        except:
-            sys.stderr.write("couldn't find Column7."+"\n")
-        try:
             this_node=this_row.find("Column8")
-            oclc_number=str(this_node.text)
+            aleph_no=str(this_node.text)
         except:
             sys.stderr.write("couldn't find Column8."+"\n")
-        item_row=str(material_type + delim + mms_id + delim + other_number + delim + title + delim + barcode + delim + description + delim + oclc_number + delim + "WD")
+        try:
+            this_node=this_row.find("Column9")
+            oclc_number=str(this_node.text)
+        except:
+            sys.stderr.write("couldn't find Column9."+"\n")
+        item_row=str(oclc_number + delim + mms_id + delim + aleph_no + delim + "WD")
         id_list.append(item_row)
         outcome = 0
     return id_list,outcome

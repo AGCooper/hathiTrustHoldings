@@ -74,7 +74,7 @@ def get_item_info(result_node,id_list):
             oclc_number=str(this_node.text)
         except:
             sys.stderr.write("couldn't find Column9."+"\n")
-        item_row=str(oclc_number + delim + mms_id + delim + aleph_no + delim + "WD")
+        item_row=str(oclc_number + delim + mms_id + "," + aleph_no + delim + "WD")
         id_list.append(item_row)
         outcome = 0
     return id_list,outcome

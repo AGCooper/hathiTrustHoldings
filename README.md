@@ -40,3 +40,5 @@ def deleted_config(I_need):
 > is part of .gitignore to keep secrets secret
 
 ----
+
+*For more information visit our [Wiki](https://github.com/Emory-LCS/hathiTrustHoldings/wiki)*

@@ -29,7 +29,7 @@ def getContents(filename):
 
 ####Pull analytics query & iterate over MMSId only
 
-tree = ET.parse('/Users/epeele/hathiTrustHoldings/HathiSerial.xml')
+tree = ET.parse('/Users/epeele/hathiTrustHoldings/Serials/HathiSerial.xml')
 
 try:
 	rows=tree.findall(".//{urn:schemas-microsoft-com:xml-analysis:rowset}R")
@@ -76,12 +76,12 @@ for this_row in rows:
 		sys.stderr.write("couldn't find OCLC Number."+"\n")
 
 
-	column=(network_number + delim + mms_id + delim + aleph_number + delim + issn)
+	column=(network_number + delim + mms_id + "," + aleph_number + delim + issn)
 	id_list = []
 	#id_list.append(column)
 	#print id_list
 
-	govdocs_num = getContents('/Users/epeele/hathiTrustHoldings/hathi-serial-govdocs.txt')
+	govdocs_num = getContents('/Users/epeele/hathiTrustHoldings/Serials/hathi-serial-govdocs.txt')
 	#print govdocs_num
 
 	if mms_id in govdocs_num:

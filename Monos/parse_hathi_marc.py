@@ -1,8 +1,8 @@
 #!/usr/bin/python
 r"""
 Authors: Alex Cooper, Bernardo Gomez
-Purpose: Identify Federal GovDocs from MARC records
-Date: 06/01/2017
+Purpose: Parse the MARC for HathiTrust Mono reports
+Date: 06/27/2017
 """
 
 from pymarc import MARCReader

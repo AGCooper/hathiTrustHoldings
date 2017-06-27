@@ -48,7 +48,7 @@ def main():
                     elif ocn.match(net_no): 
                         oclc_no = net_no
                         break
-                    elif ocolc.match(oclc_no): 
+                    elif ocolc.match(net_no): 
                         oclc_no = net_no
                         break
                     else:

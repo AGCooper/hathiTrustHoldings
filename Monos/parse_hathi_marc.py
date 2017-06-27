@@ -21,9 +21,10 @@ def main():
     try:
         for record in reader:
             try:
-                gov_pub = mmsid = oclc_no = aleph_no = description = "N/A"
+                gov_pub = mmsid = oclc_no = aleph_no = description = condition = issn = ''
                 descriptions = []
                 delim = "	"
+                holding = "CH"
             except:
                 sys.stderr.write("reader failed" + "\n")
                 continue
@@ -37,6 +38,7 @@ def main():
             except:
                 sys.stderr.write("could not get mmsid" + "\n")
 
+            # get oclc number
             try:
                 for f in record.get_fields('035'):
                     net_no = f['a']
@@ -50,9 +52,11 @@ def main():
                         oclc_no = net_no
                         break
                     else:
-                        oclc_no = "N/A"
+                        oclc_no = ''
                     if aleph.match(net_no):
                         aleph_no = net_no
+                    else:
+                        continue
             except:
                 sys.stderr.write("could not get oclc_no" + "\n")
 
@@ -75,17 +79,34 @@ def main():
                         gov_pub = 0
             except:
                 sys.stderr.write("could not parse record " + mmsid + "\n")
+
+            # get issn
+            try:
+                if record['022'] is not None:
+                    try:
+                        issn = record['022']['a']
+                    except:
+                        sys.stderr.write("could not parse 022 for " + mmsid + "\n")
+            except:
+                sys.stderr.write("could not get issn" + "\n")
+
+            # get item information
             try:
                 for f in record.get_fields('999'):
                     if f['d'] is not None:
                         description = f['d']
                     else:
-                        description = "N/A"
+                        description = ''
                     descriptions.append(description)
             except:
                 sys.stderr.wrtite("could not get item info" + "\n")
-            for d in descriptions:
-                print str(oclc_no) + delim + str(mmsid) + "," + str(aleph_no) + delim + str(gov_pub) + delim + str(d)
+
+            # print results
+            try:
+                for d in descriptions:
+                    sys.stdout.write(str(oclc_no) + delim + str(mmsid) + "," + str(aleph_no) + delim + str(holding) + delim + str(condition) + delim + str(d) + delim + str(issn) + delim + str(gov_pub) + "\n")
+            except:
+                sys.stderr.write("could not parse item list" + "\n")
     except:
         sys.stderr.write("could not read marc record" + "\n")
 

@@ -30,6 +30,12 @@ def get_item_info(result_node,id_list):
     barcode=""
     oclc_number=""
     item_id=""
+    holding="WD"
+    aleph_no=""
+    condition=""
+    description=""
+    issn=""
+    gov_pub=""
     delim="	"
     for this_row in rows:
         item_row=""
@@ -72,9 +78,13 @@ def get_item_info(result_node,id_list):
         try:
             this_node=this_row.find("Column9")
             oclc_number=str(this_node.text)
+            if oclc_number.startswith("(OCoLC)9900"):
+                oclc_number = ""
+            elif oclc_number.startswith("No"):
+                oclc_number = ""
         except:
             sys.stderr.write("couldn't find Column9."+"\n")
-        item_row=str(oclc_number + delim + mms_id + "," + aleph_no + delim + "WD")
+        item_row=str(oclc_number) + delim + str(mms_id) + "," + str(aleph_no) + delim + str(holding) + delim + str(condition) + delim + str(description) + delim + str(issn) + delim + str(gov_pub)
         id_list.append(item_row)
         outcome = 0
     return id_list,outcome

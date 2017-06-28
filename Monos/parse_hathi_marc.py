@@ -22,7 +22,7 @@ def main():
         for record in reader:
             try:
                 gov_pub = mmsid = oclc_no = aleph_no = description = condition = issn = ''
-                descriptions = []
+                item_info = []
                 delim = "	"
                 holding = "CH"
             except:
@@ -90,21 +90,28 @@ def main():
             except:
                 sys.stderr.write("could not get issn" + "\n")
 
-            # get item information
+            # get item description
             try:
                 for f in record.get_fields('999'):
                     if f['d'] is not None:
                         description = f['d']
                     else:
                         description = ''
-                    descriptions.append(description)
+                    if f['l'] is not None:
+                        location = f['l']
+                    else:
+                        continue
+                    if location != "WD":
+                        item_info.append(description)
+                    else:
+                        continue
             except:
                 sys.stderr.wrtite("could not get item info" + "\n")
 
             # print results
             try:
-                for d in descriptions:
-                    sys.stdout.write(str(oclc_no) + delim + str(mmsid) + "," + str(aleph_no) + delim + str(holding) + delim + str(condition) + delim + str(d) + delim + str(issn) + delim + str(gov_pub) + "\n")
+                for i in item_info:
+                    sys.stdout.write(str(oclc_no) + delim + str(mmsid) + "," + str(aleph_no) + delim + str(holding) + delim + str(condition) + delim + str(i) + delim + str(issn) + delim + str(gov_pub) + "\n")
             except:
                 sys.stderr.write("could not parse item list" + "\n")
     except:

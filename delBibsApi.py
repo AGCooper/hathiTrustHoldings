@@ -92,8 +92,11 @@ def get_item_info(result_node,id_list):
             elif oclc_number.startswith("No"):
                 oclc_number = ""
         except:
-            sys.stderr.write("couldn't find Column9."+"\n")
-        if aleph_no:
+            sys.stderr.write("couldn't find Column9." + "\n")
+        if not oclc_number:
+            sys.stderr.write("no OCLC number" + "\n")
+            continue
+        elif aleph_no:
             item_row=str(oclc_number) + delim + str(mms_id) + "," + str(aleph_no) + delim + str(holding) + delim + str(condition) + delim + str(description) + delim + str(issn) + delim + str(gov_pub)
         else:
             item_row=str(oclc_number) + delim + str(mms_id) + delim + str(holding) + delim + str(condition) + delim + str(description) + delim + str(issn) + delim + str(gov_pub)

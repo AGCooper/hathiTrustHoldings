@@ -20,24 +20,27 @@ def get_item_info(result_node,id_list):
         rows=result_node.findall("Row")
     except:
         sys.stderr.write("couldn't find Rows."+"\n")
-    mms_id=""
-    material_type=""
-    barcode=""
-    bib_status=""
-    other_number=""
-    title=""
-    description=""
-    barcode=""
-    oclc_number=""
-    item_id=""
-    holding="WD"
-    aleph_no=""
-    condition=""
-    description=""
-    issn=""
-    gov_pub=""
     delim="	"
     for this_row in rows:
+        mms_id=""
+        location=""
+        material_type=""
+        barcode=""
+        bib_status=""
+        other_number=""
+        title=""
+        description=""
+        barcode=""
+        oclc_number=""
+        item_id=""
+        item_type=""
+        holding="WD"
+        aleph_no=""
+        condition=""
+        description=""
+        issn=""
+        gov_pub=""
+        mono_type=""
         item_row=""
         try:
             this_node=this_row.find("Column1")
@@ -56,20 +59,24 @@ def get_item_info(result_node,id_list):
             sys.stderr.write("couldn't find Column3."+"\n")
         try:
             this_node=this_row.find("Column4")
-            other_number=str(this_node.text)
+            location=str(this_node.text)
         except:
             sys.stderr.write("couldn't find Column4."+"\n")
         try:
             this_node=this_row.find("Column5")
-            title=str(this_node.text)
+            description=str(this_node.text)
         except:
             sys.stderr.write("couldn't find Column5."+"\n")
         try:
             this_node=this_row.find("Column6")
-            barcode=str(this_node.text)
+            item_type=str(this_node.text)
         except:
             sys.stderr.write("couldn't find Column6."+"\n")
-            return id_list,outcome
+        try:
+            this_node=this_row.find("Column7")
+            mono_type=str(this_node.text)
+        except:
+            sys.stderr.write("couldn't find Column7."+"\n")
         try:
             this_node=this_row.find("Column8")
             aleph_no=str(this_node.text)
@@ -186,7 +193,7 @@ def analytics_xml(url,apikey,path,limit):
             sys.stderr.write("couldn't find rowset."+"\n")
             return outcome
         id_list,outcome=get_item_info(result_node,id_list)
-    target = open(file_name, 'a')
+    target = open(file_name, 'w')
     for ids in id_list:
         target.write(ids + "\n")
     target.close

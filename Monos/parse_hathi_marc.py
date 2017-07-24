@@ -8,8 +8,6 @@ Date: 06/27/2017
 from pymarc import MARCReader
 import re
 import sys
-import socks
-import socket
 
 def main():
 

@@ -80,6 +80,8 @@ def get_item_info(result_node,id_list):
         try:
             this_node=this_row.find("Column8")
             aleph_no=str(this_node.text)
+            if aleph_no.startswith("No ")
+                aleph_no=""
         except:
             sys.stderr.write("couldn't find Column8."+"\n")
         try:

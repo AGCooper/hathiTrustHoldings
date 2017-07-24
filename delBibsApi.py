@@ -93,7 +93,10 @@ def get_item_info(result_node,id_list):
                 oclc_number = ""
         except:
             sys.stderr.write("couldn't find Column9."+"\n")
-        item_row=str(oclc_number) + delim + str(mms_id) + "," + str(aleph_no) + delim + str(holding) + delim + str(condition) + delim + str(description) + delim + str(issn) + delim + str(gov_pub)
+        if aleph_no:
+            item_row=str(oclc_number) + delim + str(mms_id) + "," + str(aleph_no) + delim + str(holding) + delim + str(condition) + delim + str(description) + delim + str(issn) + delim + str(gov_pub)
+        else:
+            item_row=str(oclc_number) + delim + str(mms_id) + delim + str(holding) + delim + str(condition) + delim + str(description) + delim + str(issn) + delim + str(gov_pub)
         id_list.append(item_row)
         outcome = 0
     return id_list,outcome
